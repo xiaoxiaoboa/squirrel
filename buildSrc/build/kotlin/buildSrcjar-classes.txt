@@ -1,0 +1,1 @@
+C:\Users\z8242\AndroidStudioProjects\Squirrel\buildSrc\build\classes\kotlin\main\Dependencies.class;C:\Users\z8242\AndroidStudioProjects\Squirrel\buildSrc\build\classes\kotlin\main\Versions.class

@@ -221,5 +221,4 @@ fun HomeScreen(
             homeViewModel.toggleHomeDetailDatePickerShow(false)
         }
     }
-
 }

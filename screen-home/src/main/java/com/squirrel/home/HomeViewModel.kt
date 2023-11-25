@@ -74,9 +74,15 @@ class HomeViewModel @Inject constructor(
 
     fun toggleAdditionItemModalShow(value: Boolean) {
         if (value) {
-            item = item.copy(
-                time = formatDateForCurrentTime(formatter = Constants.HOUR_MINUTE)
+            // 初始化item中time字符串和timestamp
+            val millis = System.currentTimeMillis()
+            toggleItemTime(
+                formatDateForCurrentTime(
+                    millis = millis,
+                    formatter = Constants.HOUR_MINUTE
+                )
             )
+            toggleItemTimestamp(millis)
 
             /* 创建副本*/
             _item = item

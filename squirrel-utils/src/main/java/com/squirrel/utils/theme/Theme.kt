@@ -61,7 +61,8 @@ fun SquirrelTheme(content: @Composable () -> Unit) {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.background.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars =
-                themeState.value != ThemeState.DARK
+//                (themeState.value != ThemeState.DARK) && (themeState.value != ThemeState.AUTO)
+                colorScheme != DarkColorScheme
         }
     }
 

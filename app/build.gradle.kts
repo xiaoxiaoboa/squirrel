@@ -14,8 +14,8 @@ android {
         applicationId = "com.squirrel"
         minSdk = 31
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1.0"
 
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -23,6 +23,8 @@ android {
             useSupportLibrary = true
         }
     }
+
+
 
     buildTypes {
         release {
@@ -34,15 +36,18 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            resValue("string", "app_name", "Squirrel")
         }
-//        debug {
-//            proguardFiles(
-//                getDefaultProguardFile("proguard-android-optimize.txt"),
-//                "proguard-rules.pro"
-//            )
-//            isMinifyEnabled = false
-//            isShrinkResources = false
-//        }
+        debug {
+            isMinifyEnabled = false
+            isShrinkResources = false
+            isDefault = true
+            isDebuggable = true
+            
+            applicationIdSuffix = ".debug"
+            resValue("string", "app_name", "Squirrel Debug")
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_18

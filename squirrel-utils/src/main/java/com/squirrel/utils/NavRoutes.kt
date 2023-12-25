@@ -7,4 +7,5 @@ object NavRoutes {
     const val homeRoute = "home_route"
     const val analysisRoute = "analysis_route"
     const val aliyunWebView = "aliyun_webview"
+    const val setting = "setting"
 }

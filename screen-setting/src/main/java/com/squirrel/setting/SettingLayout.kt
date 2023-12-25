@@ -10,12 +10,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,7 +25,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,7 +36,6 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.squirrel.drive.SyncDrive
 import com.squirrel.utils.Constants
-import com.squirrel.utils.SnackBarHostStateSingleton
 import com.squirrel.utils.formatDateForCurrentTime
 import com.squirrel.utils.theme.ThemeState
 import com.squirrel.utils.theme.ThemeStateSingleton
@@ -40,28 +43,50 @@ import com.squirrel.utils.ui.SettingItemHeader
 import com.squirrel.utils.ui.SquirrelAlertDialog
 
 @Composable
-fun SettingModalLayout(
+fun SettingScreen(
     navController: NavHostController,
-    settingViewModel: SettingViewModel = hiltViewModel(),
     parentEntry: NavBackStackEntry,
+    settingViewModel: SettingViewModel = hiltViewModel(),
 ) {
+
     Column(
         Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(0.8f)
-            .padding(horizontal = 20.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp)
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
     ) {
-        SyncDrive(navController = navController, parentEntry = parentEntry)
-        Preference(settingViewModel::toggleTheme)
-        ExportWithImport(
-            alertDialogShow = settingViewModel.alertDialogShow,
-            toggleAlertDialog = settingViewModel::toggleAlertDialogShow,
-            restoreDbFile = settingViewModel::restoreDbFile,
-            backupDbFile = settingViewModel::backupDbFile,
-            exportCSV = settingViewModel::exportCSV
-        )
+        Row(
+            Modifier
+                .background(MaterialTheme.colorScheme.background)
+                .padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                modifier = Modifier.size(40.dp).clickable { navController.popBackStack() },
+                imageVector = ImageVector.vectorResource(id = R.drawable.navigate_before),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary
+            )
+            Text(text = "设置", color = MaterialTheme.colorScheme.primary, fontSize = 20.sp)
+        }
+        Spacer(modifier = Modifier.size(10.dp))
+        Column(
+            Modifier.padding(horizontal = 20.dp), verticalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
+
+            SyncDrive(navController = navController, parentEntry = parentEntry)
+            Preference(settingViewModel::toggleTheme)
+            ExportWithImport(
+                alertDialogShow = settingViewModel.alertDialogShow,
+                toggleAlertDialog = settingViewModel::toggleAlertDialogShow,
+                restoreDbFile = settingViewModel::restoreDbFile,
+                backupDbFile = settingViewModel::backupDbFile,
+                exportCSV = settingViewModel::exportCSV
+            )
+
+
+        }
     }
+
 }
 
 @Composable
@@ -85,19 +110,13 @@ fun Preference(toggleTheme: (themeState: MutableState<ThemeState>, targetTheme: 
                 Modifier.padding(end = 10.dp),
             ) {
                 ToggleThemeButton(
-                    text = "自动",
-                    currentTheme = theme.value,
-                    targetTheme = ThemeState.AUTO
+                    text = "自动", currentTheme = theme.value, targetTheme = ThemeState.AUTO
                 ) { toggleTheme(theme, ThemeState.AUTO) }
                 ToggleThemeButton(
-                    text = "深色",
-                    currentTheme = theme.value,
-                    targetTheme = ThemeState.DARK
+                    text = "深色", currentTheme = theme.value, targetTheme = ThemeState.DARK
                 ) { toggleTheme(theme, ThemeState.DARK) }
                 ToggleThemeButton(
-                    text = "浅色",
-                    currentTheme = theme.value,
-                    targetTheme = ThemeState.LIGHT
+                    text = "浅色", currentTheme = theme.value, targetTheme = ThemeState.LIGHT
                 ) { toggleTheme(theme, ThemeState.LIGHT) }
             }
         }
@@ -170,15 +189,13 @@ fun ExportWithImport(
         }
 
         if (alertDialogShow) {
-            SquirrelAlertDialog(
-                title = "导入说明",
+            SquirrelAlertDialog(title = "导入说明",
                 text = "请导入本程序导出的.db文件\n导入会覆盖现在程序中的支出数据\n导入后请重启程序",
                 onDismissRequest = { toggleAlertDialog(false) },
                 onConfirmRequest = {
                     toggleAlertDialog(false)
                     filePickerLauncher.launch("application/zip")
-                }
-            )
+                })
         }
     }
 }
@@ -201,21 +218,18 @@ fun ExportWithImportWrapper(icon: Int, title: String, description: String, onCli
 
 @Composable
 fun ToggleThemeButton(
-    text: String,
-    currentTheme: ThemeState,
-    targetTheme: ThemeState,
-    onClick: () -> Unit
+    text: String, currentTheme: ThemeState, targetTheme: ThemeState, onClick: () -> Unit
 ) {
     Box(
         Modifier
             .clip(RoundedCornerShape(15.dp))
-            .background(if (currentTheme == targetTheme) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSecondary)
+            .background(if (currentTheme == targetTheme) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.background)
             .clickable { onClick() }) {
         Box(Modifier.padding(horizontal = 8.dp, vertical = 4.dp)) {
             Text(
                 text = text,
                 fontSize = 14.sp,
-                color = if (currentTheme == targetTheme) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.primary
+                color = if (currentTheme == targetTheme) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.primary
             )
         }
     }

@@ -64,5 +64,4 @@ dependencies {
 
     implementation(project(Dependencies.data))
     implementation(project(Dependencies.utils))
-    implementation(project(Dependencies.setting))
 }

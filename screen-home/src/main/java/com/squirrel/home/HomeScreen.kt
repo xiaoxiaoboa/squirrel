@@ -16,10 +16,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.squirrel.home.modal.BottomSheetModal
-import com.squirrel.setting.SettingModalLayout
 import com.squirrel.utils.Constants
 import com.squirrel.utils.formatDateForCurrentTime
 import com.squirrel.utils.formatDateForYearMonthDay
@@ -31,8 +29,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     navController: NavHostController,
-    parentEntry: NavBackStackEntry,
-    homeViewModel: HomeViewModel = hiltViewModel(parentEntry),
+    homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
     val categoryBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val additionBottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -52,8 +49,8 @@ fun HomeScreen(
             date = homeViewModel.date,
             monthTotalExp = homeViewModel.monthTotalExp,
             toggleCategoryModalShow = homeViewModel::toggleCategoryModalShow,
-            toggleSettingModalShow = homeViewModel::toggleSettingModalShow,
-            toggleDatePickerShow = homeViewModel::toggleDatePickerShow
+            toggleDatePickerShow = homeViewModel::toggleDatePickerShow,
+            navController = navController,
         )
 
 
@@ -166,19 +163,6 @@ fun HomeScreen(
                         }
                     }
                 })
-        }
-    }
-
-
-    if (homeViewModel.settingModalShow) {
-        BottomSheetModal(
-            sheetState = settingBottomSheetState,
-            coroutineScope = coroutineScope,
-            onClose = homeViewModel::toggleSettingModalShow
-        ) {
-            SettingModalLayout(
-                navController = navController, parentEntry = parentEntry
-            )
         }
     }
 

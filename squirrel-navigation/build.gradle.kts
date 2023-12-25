@@ -55,4 +55,5 @@ dependencies {
     implementation(project(Dependencies.homeScreen))
     implementation(project(Dependencies.drive))
     implementation(project(Dependencies.utils))
+    implementation(project(Dependencies.setting))
 }

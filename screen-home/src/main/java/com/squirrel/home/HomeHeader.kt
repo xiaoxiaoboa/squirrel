@@ -24,7 +24,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.squirrel.utils.Constants
+import com.squirrel.utils.NavRoutes
 import com.squirrel.utils.formatDouble
 import com.squirrel.utils.formatMoneyDisplay
 import com.squirrel.utils.types.Date
@@ -35,7 +37,7 @@ fun HomeHeader(
     monthTotalExp: Double,
     toggleDatePickerShow: (show: Boolean) -> Unit,
     toggleCategoryModalShow: (show: Boolean) -> Unit,
-    toggleSettingModalShow: (show: Boolean) -> Unit
+    navController: NavHostController,
 ) {
     val money = formatDouble(monthTotalExp)
     Column {
@@ -55,7 +57,7 @@ fun HomeHeader(
                 }
                 Spacer(modifier = Modifier.size(10.dp))
                 HomeHeaderBtn(icon = R.drawable.user) {
-                    toggleSettingModalShow(true)
+                    navController.navigate(route = NavRoutes.setting)
                 }
                 Spacer(modifier = Modifier.size(10.dp))
                 HomeHeaderBtn(icon = R.drawable.plus) {

@@ -57,8 +57,6 @@ class HomeViewModel @Inject constructor(
         private set
     var deleteDialogShow by mutableStateOf(Constants.INIT_FALSE)
         private set
-    var settingModalShow by mutableStateOf(Constants.INIT_FALSE)
-        private set
     var datePickerShow by mutableStateOf(Constants.INIT_FALSE)
         private set
     var homeDetailDatePickerShow by mutableStateOf(Constants.INIT_FALSE)
@@ -104,10 +102,6 @@ class HomeViewModel @Inject constructor(
 
     fun toggleDeleteDialogShow(show: Boolean) {
         deleteDialogShow = show
-    }
-
-    fun toggleSettingModalShow(show: Boolean) {
-        settingModalShow = show
     }
 
     fun toggleDatePickerShow(show: Boolean) {

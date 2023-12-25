@@ -17,9 +17,6 @@ fun AliYunDrive(navController: NavHostController, enabled: Boolean) {
     ) {
         val base64Url =
             Base64.encodeToString(ConstantsForAliYun.AUTH_URL.toByteArray(), Base64.DEFAULT)
-        navController.navigate("${NavRoutes.aliyunWebView}/$base64Url") {
-            popUpTo(NavRoutes.aliyunWebView)
-            launchSingleTop = true
-        }
+        navController.navigate("${NavRoutes.aliyunWebView}/$base64Url")
     }
 }

@@ -53,7 +53,7 @@ fun BottomTabs(navController: NavHostController) {
             selected = navBackStackEntry?.destination?.route == NavRoutes.analysisRoute
         ) {
             navController.navigate(route = NavRoutes.analysisRoute) {
-                popUpTo(NavRoutes.homeRoute)
+                popUpTo(NavRoutes.analysisRoute)
                 launchSingleTop = true
             }
         }

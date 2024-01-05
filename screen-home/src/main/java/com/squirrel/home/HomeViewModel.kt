@@ -1,11 +1,13 @@
 package com.squirrel.home
 
+import android.util.Log
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.squirrel.data.entity.toDayData
@@ -129,10 +131,11 @@ class HomeViewModel @Inject constructor(
     }
 
     fun toggleItemMoney(value: String) {
+        if (!value.isDigitsOnly()) return
+
         temporaryMoney = value
-        value.toDoubleOrNull()?.let {
-            item = item.copy(exp = it)
-        }
+
+        item = item.copy(exp = value.toDouble())
     }
 
     fun toggleItemRemark(value: String) {

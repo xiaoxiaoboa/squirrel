@@ -98,16 +98,6 @@ fun SquirrelNavHost(navController: NavHostController, modifier: Modifier = Modif
                 animationSpec = tween(300)
             )
         }
-//            enterTransition = {
-//                slideInHorizontally(
-//                    initialOffsetX = { it }, animationSpec = tween(300)
-//                )
-//            },
-//            exitTransition = {
-//                slideOutHorizontally(
-//                    targetOffsetX = { it }, animationSpec = tween(300)
-//                )
-//            }
         ) {
             val parentEntry = remember(it) {
                 navController.getBackStackEntry(NavRoutes.setting)

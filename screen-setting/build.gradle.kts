@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.mmkv)
     implementation(libs.appcompat)
+    implementation(libs.biometric)
 
     implementation(project(Dependencies.data))
     implementation(project(Dependencies.utils))

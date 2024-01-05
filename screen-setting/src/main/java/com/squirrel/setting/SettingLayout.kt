@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +20,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -28,9 +31,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
@@ -39,8 +42,12 @@ import com.squirrel.utils.Constants
 import com.squirrel.utils.formatDateForCurrentTime
 import com.squirrel.utils.theme.ThemeState
 import com.squirrel.utils.theme.ThemeStateSingleton
+import com.squirrel.utils.ui.SettingItemFrame
 import com.squirrel.utils.ui.SettingItemHeader
 import com.squirrel.utils.ui.SquirrelAlertDialog
+import com.squirrel.utils.ui.biometricModal
+import com.squirrel.utils.ui.checkDeviceBiometric
+import com.squirrel.utils.ui.handleBiometricAuthResult
 
 @Composable
 fun SettingScreen(
@@ -61,7 +68,9 @@ fun SettingScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                modifier = Modifier.size(40.dp).clickable { navController.popBackStack() },
+                modifier = Modifier
+                    .size(40.dp)
+                    .clickable { navController.popBackStack() },
                 imageVector = ImageVector.vectorResource(id = R.drawable.navigate_before),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary
@@ -74,7 +83,9 @@ fun SettingScreen(
         ) {
 
             SyncDrive(navController = navController, parentEntry = parentEntry)
+
             Preference(settingViewModel::toggleTheme)
+
             ExportWithImport(
                 alertDialogShow = settingViewModel.alertDialogShow,
                 toggleAlertDialog = settingViewModel::toggleAlertDialogShow,
@@ -83,7 +94,10 @@ fun SettingScreen(
                 exportCSV = settingViewModel::exportCSV
             )
 
-
+            AppSecurity(
+                appLockEnable = settingViewModel.appLockEnable,
+                toggleAppLockEnable = settingViewModel::toggleAppLockEnable,
+            )
         }
     }
 
@@ -93,13 +107,7 @@ fun SettingScreen(
 fun Preference(toggleTheme: (themeState: MutableState<ThemeState>, targetTheme: ThemeState) -> Unit) {
     val theme = ThemeStateSingleton.themeState
 
-    Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        Text(
-            text = "偏好",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
-        )
+    SettingItemFrame(title = "偏好") {
         Row(
             Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -153,15 +161,7 @@ fun ExportWithImport(
             }
         }
 
-    Column(
-        Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        Text(
-            text = "数据",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
-        )
+    SettingItemFrame(title = "数据") {
         Column(Modifier.fillMaxWidth()) {
             ExportWithImportWrapper(
                 icon = R.drawable.excel, title = "导出Excel", description = "将数据导出为Excel表格"
@@ -187,16 +187,16 @@ fun ExportWithImport(
                 icon = R.drawable.import_data, title = "导入", description = "将已有的数据文件恢复"
             ) { toggleAlertDialog(true) }
         }
+    }
 
-        if (alertDialogShow) {
-            SquirrelAlertDialog(title = "导入说明",
-                text = "请导入本程序导出的.db文件\n导入会覆盖现在程序中的支出数据\n导入后请重启程序",
-                onDismissRequest = { toggleAlertDialog(false) },
-                onConfirmRequest = {
-                    toggleAlertDialog(false)
-                    filePickerLauncher.launch("application/zip")
-                })
-        }
+    if (alertDialogShow) {
+        SquirrelAlertDialog(title = "导入说明",
+            text = "请导入本程序导出的.zip文件\n导入会覆盖现在程序中的支出数据\n导入后请重启程序",
+            onDismissRequest = { toggleAlertDialog(false) },
+            onConfirmRequest = {
+                toggleAlertDialog(false)
+                filePickerLauncher.launch("application/zip")
+            })
     }
 }
 
@@ -231,6 +231,54 @@ fun ToggleThemeButton(
                 fontSize = 14.sp,
                 color = if (currentTheme == targetTheme) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.primary
             )
+        }
+    }
+}
+
+
+@Composable
+fun AppSecurity(
+    appLockEnable: Boolean,
+    toggleAppLockEnable: () -> Unit,
+) {
+    val context = LocalContext.current as FragmentActivity
+    SettingItemFrame(title = "安全") {
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            SettingItemHeader(
+                icon = R.drawable.lock, title = "加锁", description = "每次打开时都需验证身份"
+            )
+            Switch(checked = appLockEnable, thumbContent = {
+                if (appLockEnable) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.check),
+                        contentDescription = null,
+                        modifier = Modifier.size(SwitchDefaults.IconSize),
+                        tint = MaterialTheme.colorScheme.background
+                    )
+                }
+            }, colors = SwitchDefaults.colors(
+                checkedBorderColor = MaterialTheme.colorScheme.primary,
+//                        uncheckedBorderColor = MaterialTheme.colorScheme.primary,
+                checkedTrackColor = MaterialTheme.colorScheme.background,
+//                        uncheckedTrackColor = MaterialTheme.colorScheme.background,
+                checkedThumbColor = MaterialTheme.colorScheme.primary,
+//                        uncheckedThumbColor = MaterialTheme.colorScheme.primary
+            ), onCheckedChange = {
+                if (it) {
+                    checkDeviceBiometric(activity = context) {
+                        toggleAppLockEnable()
+                    }
+                } else {
+                    biometricModal(
+                        activity = context,
+                        biometricPromptCallback = handleBiometricAuthResult(toggleAppLockEnable)
+                    )
+                }
+            })
         }
     }
 }

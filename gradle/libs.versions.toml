@@ -20,6 +20,7 @@ splashscreen = "1.0.1"
 okHttp = "4.11.0"
 moshi = "1.15.0"
 moshi-kotlin = "1.15.0"
+biometric = "1.2.0-alpha05"
 
 [libraries]
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
@@ -49,7 +50,7 @@ moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi-kotlin" }
 compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
-
+biometric = { module = "androidx.biometric:biometric-ktx", version.ref = "biometric" }
 
 [bundles]
 

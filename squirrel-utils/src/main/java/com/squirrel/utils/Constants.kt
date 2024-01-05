@@ -30,6 +30,7 @@ object Constants {
     const val AliYun_BACKUP_FILE = "backup_file"
     const val TOKEN = "token"
     const val ALIYUN_IS_LOGIN = "aliyun_isLogin"
+    const val APP_LOCK_ENABLE = "appLockEnable"
 
     /* database*/
     const val DATABASE_NAME = "squirrel.db"

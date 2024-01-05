@@ -54,4 +54,5 @@ dependencies {
     implementation(libs.mmkv)
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
+    implementation(libs.biometric)
 }

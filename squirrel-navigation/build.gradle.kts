@@ -50,6 +50,7 @@ dependencies {
     androidTestImplementation(libs.andorid.junit)
     implementation(libs.navigation.compose)
     implementation(libs.appcompat)
+    implementation(libs.biometric)
 
 
     implementation(project(Dependencies.homeScreen))

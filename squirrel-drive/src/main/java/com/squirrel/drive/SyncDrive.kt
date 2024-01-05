@@ -33,6 +33,7 @@ import coil.compose.AsyncImage
 import com.squirrel.drive.aliyun.AliYunDrive
 import com.squirrel.utils.Constants
 import com.squirrel.utils.getNoMoreThanTwoDigits
+import com.squirrel.utils.ui.SettingItemFrame
 import com.squirrel.utils.ui.SettingItemHeader
 import com.squirrel.utils.ui.SquirrelAlertDialog
 
@@ -44,13 +45,7 @@ fun SyncDrive(
 ) {
     val context = LocalContext.current
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Text(
-                text = "账号",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
-            )
+        SettingItemFrame(title = "账号") {
             Row(
                 Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
@@ -80,13 +75,7 @@ fun SyncDrive(
             }
         }
 
-        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Text(
-                text = "同步",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
-            )
+        SettingItemFrame(title = "同步") {
             AliYunDrive(navController = navController, enabled = !driveViewModel.aliYunIsLogin)
         }
     }

@@ -3,6 +3,7 @@ package com.squirrel.setting
 
 import android.content.Context
 import android.net.Uri
+import androidx.biometric.BiometricPrompt
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.MutableState
@@ -36,15 +37,22 @@ class SettingViewModel @Inject constructor(
     private var items by mutableStateOf<List<Item>>(emptyList())
     var alertDialogShow by mutableStateOf(Constants.INIT_FALSE)
 
+    var appLockEnable by mutableStateOf(StorageSingleton.storage.decodeBool(Constants.APP_LOCK_ENABLE))
+
 
     fun toggleAlertDialogShow(value: Boolean) {
         alertDialogShow = value
     }
 
+    fun toggleAppLockEnable() {
+        appLockEnable = !appLockEnable
+        StorageSingleton.storage.encode(Constants.APP_LOCK_ENABLE, appLockEnable)
+    }
 
     private suspend fun getItems() {
         items = itemRepository.getItemAll().map { it.toItem() }
     }
+
 
     fun backupDbFile(context: Context, uri: Uri) {
         viewModelScope.launch {

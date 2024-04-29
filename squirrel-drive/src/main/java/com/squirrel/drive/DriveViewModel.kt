@@ -1,7 +1,6 @@
 package com.squirrel.drive
 
 import android.content.Context
-import androidx.annotation.Keep
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -9,7 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.squirrel.data.repository.ItemRepository
+import com.squirrel.data.repository.TransactionRepository
 import com.squirrel.drive.aliyun.ConstantsForAliYun
 import com.squirrel.drive.aliyun.api.AliApiRepository
 import com.squirrel.drive.aliyun.types.CreateFileResponse
@@ -31,7 +30,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DriveViewModel @Inject constructor(
-    private val aliApiRepository: AliApiRepository, private val itemRepository: ItemRepository
+    private val aliApiRepository: AliApiRepository, private val transactionRepository: TransactionRepository
 ) : ViewModel() {
     private var aliYunToken by mutableStateOf(GetTokenResponse())
     var aliYunUserInfo by mutableStateOf(GetUserResponse())
@@ -78,7 +77,7 @@ class DriveViewModel @Inject constructor(
 
     private fun getItemsCount() {
         viewModelScope.launch {
-            itemRepository.getItemsCount().collect() {
+            transactionRepository.getItemsCount().collect() {
                 itemsCount = it
             }
         }

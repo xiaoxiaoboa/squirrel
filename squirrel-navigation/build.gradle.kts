@@ -1,4 +1,5 @@
 plugins {
+    kotlin("kapt")
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
 }
@@ -34,8 +35,12 @@ android {
         compose  = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion  = "1.5.3"
+        kotlinCompilerExtensionVersion  = "1.5.10"
     }
+
+}
+kapt {
+    correctErrorTypes = true
 }
 
 
@@ -51,10 +56,11 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.appcompat)
     implementation(libs.biometric)
+    implementation(libs.hilt)
+    kapt(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
 
-
-    implementation(project(Dependencies.homeScreen))
     implementation(project(Dependencies.drive))
     implementation(project(Dependencies.utils))
-    implementation(project(Dependencies.setting))
+    implementation(project(Dependencies.screens))
 }

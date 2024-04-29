@@ -15,7 +15,7 @@ android {
         minSdk = 31
         targetSdk = 33
         versionCode = 2
-        versionName = "1.2.0"
+        versionName = "1.3.0.240429_beta"
 
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -60,7 +60,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
+        kotlinCompilerExtensionVersion = "1.5.10"
     }
     packaging {
         resources {
@@ -102,9 +102,9 @@ dependencies {
 
 
 
-    implementation(project(Dependencies.bottomTabs))
     implementation(project(Dependencies.navHost))
     implementation(project(Dependencies.utils))
     implementation(project(Dependencies.navHost))
+    implementation(project(Dependencies.screens))
 
 }

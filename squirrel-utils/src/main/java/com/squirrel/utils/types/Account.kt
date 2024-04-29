@@ -4,7 +4,8 @@ import androidx.annotation.Keep
 
 
 data class Account(
+    val id: Int,
     val name: String,
-    val icon: Int
+    var totalAmount: Double
 )
 

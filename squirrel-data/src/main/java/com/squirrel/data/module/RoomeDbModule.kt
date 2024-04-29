@@ -2,15 +2,18 @@ package com.squirrel.data.module
 
 import android.content.Context
 import com.squirrel.data.SquirrelRoomDatabase
+import com.squirrel.data.dao.AccountDao
+import com.squirrel.data.dao.CombineDao
 import com.squirrel.data.dao.DayDao
-import com.squirrel.data.dao.EntireDao
-import com.squirrel.data.dao.ItemDao
+import com.squirrel.data.dao.TransactionDao
+import com.squirrel.data.repository.AccountRepository
+import com.squirrel.data.repository.CombineRepository
 import com.squirrel.data.repository.DayRepository
-import com.squirrel.data.repository.EntireRepository
-import com.squirrel.data.repository.ItemRepository
+import com.squirrel.data.repository.TransactionRepository
+import com.squirrel.data.repository.impl.AccountRepositoryImpl
+import com.squirrel.data.repository.impl.CombineRepositoryImpl
 import com.squirrel.data.repository.impl.DayRepositoryImpl
-import com.squirrel.data.repository.impl.EntireRepositoryImpl
-import com.squirrel.data.repository.impl.ItemRepositoryImpl
+import com.squirrel.data.repository.impl.TransactionRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,8 +36,8 @@ object RoomDbModule {
     }
 
     @Provides
-    fun provideItemDao(db: SquirrelRoomDatabase): ItemDao {
-        return db.itemDao()
+    fun provideTransactionDao(db: SquirrelRoomDatabase): TransactionDao {
+        return db.transactionDao()
     }
 
     @Provides
@@ -43,16 +46,20 @@ object RoomDbModule {
     }
 
 
+    @Provides
+    fun provideCombineDao(db: SquirrelRoomDatabase): CombineDao {
+        return db.combineDao()
+    }
 
     @Provides
-    fun provideEntireDao(db: SquirrelRoomDatabase): EntireDao {
-        return db.entireDao()
+    fun provideAccountDao(db: SquirrelRoomDatabase): AccountDao {
+        return db.accountDao()
     }
 
     @Provides
     @Singleton
-    fun provideItemRepository(itemDao: ItemDao): ItemRepository {
-        return ItemRepositoryImpl(itemDao)
+    fun provideTransactionRepository(itemDao: TransactionDao): TransactionRepository {
+        return TransactionRepositoryImpl(itemDao)
     }
 
     @Provides
@@ -62,10 +69,15 @@ object RoomDbModule {
     }
 
 
+    @Provides
+    @Singleton
+    fun provideCombineRepository(entireDao: CombineDao): CombineRepository {
+        return CombineRepositoryImpl(entireDao)
+    }
 
     @Provides
     @Singleton
-    fun provideEntireRepository(entireDao: EntireDao): EntireRepository {
-        return EntireRepositoryImpl(entireDao)
+    fun provideAccountRepository(accountDao: AccountDao): AccountRepository {
+        return AccountRepositoryImpl(accountDao)
     }
 }

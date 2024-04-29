@@ -9,9 +9,8 @@ import com.squirrel.utils.StorageSingleton
 
 
 fun getLocalTheme(): ThemeState {
-    val localTheme = StorageSingleton.storage.decodeString(Constants.THEME)
 
-    return when (localTheme) {
+    return when (StorageSingleton.storage.decodeString(Constants.THEME)) {
         "auto" -> ThemeState.AUTO
         "dark" -> ThemeState.DARK
         "light" -> ThemeState.LIGHT

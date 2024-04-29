@@ -3,7 +3,6 @@ package com.squirrel.setting
 
 import android.content.Context
 import android.net.Uri
-import androidx.biometric.BiometricPrompt
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.MutableState
@@ -15,7 +14,7 @@ import androidx.lifecycle.viewModelScope
 import com.squirrel.data.SquirrelRoomDatabase
 import com.squirrel.data.entity.toCSV
 import com.squirrel.data.entity.toItem
-import com.squirrel.data.repository.ItemRepository
+import com.squirrel.data.repository.TransactionRepository
 import com.squirrel.utils.Accounts
 import com.squirrel.utils.Constants
 import com.squirrel.utils.StorageSingleton
@@ -32,7 +31,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
-    private val itemRepository: ItemRepository
+    private val transactionRepository: TransactionRepository
 ) : ViewModel() {
     private var items by mutableStateOf<List<Item>>(emptyList())
     var alertDialogShow by mutableStateOf(Constants.INIT_FALSE)
@@ -50,7 +49,7 @@ class SettingViewModel @Inject constructor(
     }
 
     private suspend fun getItems() {
-        items = itemRepository.getItemAll().map { it.toItem() }
+        items = transactionRepository.getItemAll().map { it.toItem() }
     }
 
 

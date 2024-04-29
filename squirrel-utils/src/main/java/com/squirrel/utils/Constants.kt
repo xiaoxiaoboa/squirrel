@@ -12,7 +12,7 @@ object Constants {
     const val HOUR_MINUTE = "HH:mm"
     const val YEAR_MONTH_DAY = "yyyy年MM月dd日"
     const val MONTH_DAY = "MM-dd"
-    const val ACCOUNT_VALUE = 0
+    const val ACCOUNT_VALUE = 1
     const val INIT_FALSE = false
     const val INIT_TRUE = true
     const val BACKUP_FILE_TIME_FORMAT = "yyyy-MM-dd HH_mm"

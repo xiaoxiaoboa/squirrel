@@ -7,4 +7,5 @@ object Dependencies {
     const val utils = ":squirrel-utils"
     const val drive = ":squirrel-drive"
     const val setting = ":screen-setting"
+    const val screens = ":squirrel-screens"
 }

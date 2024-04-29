@@ -1,6 +1,7 @@
 package com.squirrel.data.entity
 
 import androidx.annotation.Keep
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -11,5 +12,6 @@ data class DayEntity(
     val year: Int,
     val month: Int,
     val day: Int,
-    val dayExpenditure: Double,
+    @ColumnInfo(name = "totalAmount", defaultValue = "empty")
+    val totalAmount: Double,
 )

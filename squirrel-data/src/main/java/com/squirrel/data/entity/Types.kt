@@ -7,22 +7,22 @@ import com.squirrel.utils.Categories
 import com.squirrel.utils.types.Account
 import com.squirrel.utils.types.Day
 import com.squirrel.utils.types.DaysWithItems
-import com.squirrel.utils.types.Item
+import com.squirrel.utils.types.Transaction
 
 
 @Keep
 data class DayWithItem(
     @Embedded val day: DayEntity,
     @Relation(
-        entity = ItemEntity::class,
+        entity = TransactionEntity::class,
         parentColumn = "dayId",
         entityColumn = "dayId",
     )
-    val items: List<ItemEntity>
+    val items: List<TransactionEntity>
 )
 
 
-fun Item.toItemEntity(): ItemEntity = ItemEntity(
+fun Transaction.toTransactionEntity(): TransactionEntity = TransactionEntity(
     itemId = itemId,
     dayId = dayId,
     year = year,
@@ -30,19 +30,19 @@ fun Item.toItemEntity(): ItemEntity = ItemEntity(
     day = day,
     remark = remark,
     time = time,
-    exp = exp,
+    amount = amount,
     account = account,
     category = category,
     timestamp = timestamp
 )
 
-fun ItemEntity.toItem(): Item = Item(
+fun TransactionEntity.toItem(): Transaction = Transaction(
     itemId = itemId,
     day = day,
     dayId = dayId,
     month = month,
     year = year,
-    exp = exp,
+    amount = amount,
     time = time,
     remark = remark,
     account = account,
@@ -56,11 +56,11 @@ fun Day.toDayEntity(): DayEntity = DayEntity(
     year = year,
     month = month,
     day = day,
-    dayExpenditure = dayExpenditure,
+    totalAmount = dayExpenditure,
 )
 
 fun DayEntity.toDayData(): Day = Day(
-    dayId = dayId, year = year, month = month, day = day, dayExpenditure = dayExpenditure
+    dayId = dayId, year = year, month = month, day = day, dayExpenditure = totalAmount
 )
 
 fun DayWithItem.toDaysWithItems(): DaysWithItems = DaysWithItems(
@@ -68,7 +68,19 @@ fun DayWithItem.toDaysWithItems(): DaysWithItems = DaysWithItems(
     items = items.map { it.toItem() },
 )
 
-fun Item.toCSV(accounts: List<Account>): String {
+fun AccountEntity.toAccount(): Account = Account(
+    id = id,
+    name = name,
+    totalAmount = totalAmount
+)
+
+fun Account.toAccountEntity(): AccountEntity = AccountEntity(
+    id = id,
+    name = name,
+    totalAmount = totalAmount
+)
+
+fun Transaction.toCSV(accounts: List<Account>): String {
     val csv = StringBuilder()
 
     csv.append(year.toString())
@@ -86,7 +98,7 @@ fun Item.toCSV(accounts: List<Account>): String {
     csv.append(Categories[category].name)
     csv.append(",")
 
-    csv.append(exp.toString())
+    csv.append(amount.toString())
     csv.append(",")
 
     csv.append(remark)

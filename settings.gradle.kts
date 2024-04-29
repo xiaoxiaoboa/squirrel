@@ -15,10 +15,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "Squirrel"
 include(":app")
-include(":screen-home")
-include(":bottom-tabs")
 include(":squirrel-navigation")
 include(":squirrel-data")
 include(":squirrel-utils")
 include(":squirrel-drive")
-include(":screen-setting")
+include(":squirrel-screens")

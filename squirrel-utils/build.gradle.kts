@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.squirrel.utils"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 31
@@ -36,7 +36,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3"
+        kotlinCompilerExtensionVersion = "1.5.10"
     }
 }
 

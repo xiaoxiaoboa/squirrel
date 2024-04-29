@@ -28,6 +28,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
@@ -42,6 +43,7 @@ import com.squirrel.utils.Constants
 import com.squirrel.utils.formatDateForCurrentTime
 import com.squirrel.utils.theme.ThemeState
 import com.squirrel.utils.theme.ThemeStateSingleton
+import com.squirrel.utils.ui.PageHeader
 import com.squirrel.utils.ui.SettingItemFrame
 import com.squirrel.utils.ui.SettingItemHeader
 import com.squirrel.utils.ui.SquirrelAlertDialog
@@ -59,27 +61,16 @@ fun SettingScreen(
     Column(
         Modifier
             .fillMaxSize()
+
             .background(MaterialTheme.colorScheme.background)
     ) {
-        Row(
-            Modifier
-                .background(MaterialTheme.colorScheme.background)
-                .padding(10.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                modifier = Modifier
-                    .size(40.dp)
-                    .clickable { navController.popBackStack() },
-                imageVector = ImageVector.vectorResource(id = R.drawable.navigate_before),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
-            )
-            Text(text = "设置", color = MaterialTheme.colorScheme.primary, fontSize = 20.sp)
+        PageHeader(title = "设置") {
+            navController.popBackStack()
         }
         Spacer(modifier = Modifier.size(10.dp))
         Column(
-            Modifier.padding(horizontal = 20.dp), verticalArrangement = Arrangement.spacedBy(20.dp)
+            Modifier.padding(horizontal = 20.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
 
             SyncDrive(navController = navController, parentEntry = parentEntry)
@@ -264,7 +255,7 @@ fun AppSecurity(
                 checkedBorderColor = MaterialTheme.colorScheme.primary,
 //                        uncheckedBorderColor = MaterialTheme.colorScheme.primary,
                 checkedTrackColor = MaterialTheme.colorScheme.background,
-//                        uncheckedTrackColor = MaterialTheme.colorScheme.background,
+                uncheckedTrackColor = MaterialTheme.colorScheme.background,
                 checkedThumbColor = MaterialTheme.colorScheme.primary,
 //                        uncheckedThumbColor = MaterialTheme.colorScheme.primary
             ), onCheckedChange = {
